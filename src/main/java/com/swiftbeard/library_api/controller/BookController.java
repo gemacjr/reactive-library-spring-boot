@@ -1,6 +1,8 @@
 package com.swiftbeard.library_api.controller;
 
 import com.swiftbeard.library_api.model.Book;
+import com.swiftbeard.library_api.model.BookInput;
+import com.swiftbeard.library_api.model.BookUpdateInput;
 import com.swiftbeard.library_api.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -37,29 +39,29 @@ public class BookController {
     }
 
     @MutationMapping
-    public Mono<Book> createBook(@Argument("book") Book input) {
+    public Mono<Book> createBook(@Argument("book") BookInput input) {
         Book book = Book.builder()
-                .title(input.getTitle())
-                .author(input.getAuthor())
-                .isbn(input.getIsbn())
-                .publishYear(input.getPublishYear())
-                .genre(input.getGenre())
-                .available(input.getAvailable() != null ? input.getAvailable() : true)
+                .title(input.title())
+                .author(input.author())
+                .isbn(input.isbn())
+                .publishYear(input.publishYear())
+                .genre(input.genre())
+                .available(input.available() != null ? input.available() : true)
                 .build();
 
         return bookService.createBook(book);
     }
 
     @MutationMapping
-    public Mono<Book> updateBook(@Argument("book") Book input) {
+    public Mono<Book> updateBook(@Argument("book") BookUpdateInput input) {
         Book book = Book.builder()
-                .id(input.getId())
-                .title(input.getTitle())
-                .author(input.getAuthor())
-                .isbn(input.getIsbn())
-                .publishYear(input.getPublishYear())
-                .genre(input.getGenre())
-                .available(input.getAvailable())
+                .id(input.id())
+                .title(input.title())
+                .author(input.author())
+                .isbn(input.isbn())
+                .publishYear(input.publishYear())
+                .genre(input.genre())
+                .available(input.available())
                 .build();
 
         return bookService.updateBook(book);
@@ -69,10 +71,11 @@ public class BookController {
     public Mono<Boolean> deleteBook(@Argument Long id) {
         return bookService.deleteBook(id);
     }
+}
 
     // Input classes for GraphQL mutations
-    record BookInput(String title, String author, String isbn, Integer publishYear, String genre, Boolean available) {}
 
-    record BookUpdateInput(Long id, String title, String author, String isbn, Integer publishYear, String genre, Boolean available) {}
-}
+
+
+
 
